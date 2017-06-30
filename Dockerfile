@@ -3,10 +3,10 @@ FROM ubuntu:17.04
 RUN apt-get update
 
 # basic packages
-RUN apt-get install -y gnupg net-tools wget nano
+RUN apt-get install -y gnupg net-tools wget nano less cron ntp
 
 # php
-RUN apt-get install -y php php-fpm php-mysql
+RUN apt-get install -y php php-fpm php-mysql php-gd php-curl php-xdebug
 RUN mkdir /run/php
 COPY config/fpm.sh /root/fpm.sh
 RUN echo "php_admin_flag[log_errors] = on" >> /etc/php/7.0/fpm/pool.d/www.conf
@@ -32,6 +32,7 @@ RUN apt-get install -y apt-utils \
 COPY config/mysql.sql /tmp/mysql.sql
 COPY config/mysql.sh /root/mysql.sh
 COPY config/data.sh /root/data.sh
+COPY config/php-cli.ini /etc/php/7.0/cli/php.ini
 
 # supervisor
 RUN apt-get install -y supervisor
@@ -45,7 +46,12 @@ COPY config/nginx.sh /root/nginx.sh
 # init
 COPY config/init.sh /root/init.sh
 
+# timezone
+COPY config/timezone.sh /root/timezone.sh
+
+# clean up
+RUN apt-get clean
+
 EXPOSE 80
-EXPOSE 443
 
 ENTRYPOINT ["/usr/bin/supervisord", "--nodaemon", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

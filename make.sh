@@ -2,4 +2,4 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-docker build --rm -t="ryan-mahoney/wordpress-microserver" $DIR
+docker build --rm -t="opinephp/wordpress-microserver" $DIR
