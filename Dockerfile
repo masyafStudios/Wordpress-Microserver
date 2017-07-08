@@ -6,13 +6,10 @@ RUN apt-get update
 RUN apt-get install -y gnupg net-tools wget nano less cron ntp
 
 # php
-RUN apt-get install -y php php-fpm php-mysql php-gd php-curl php-xdebug
+RUN apt-get install -y php php-fpm php-mysql php-gd php-curl php-mbstring php-mcrypt php-xml php-xmlrpc
 RUN mkdir /run/php
 COPY config/fpm.sh /root/fpm.sh
-RUN echo "php_admin_flag[log_errors] = on" >> /etc/php/7.0/fpm/pool.d/www.conf
-RUN echo "catch_workers_output = yes" >> /etc/php/7.0/fpm/pool.d/www.conf
-RUN echo "php_admin_value[error_log] = /media/persistent/log/fpm.err.log" >> /etc/php/7.0/fpm/pool.d/www.conf
-RUN echo "clear_env = no" >> /etc/php/7.0/fpm/pool.d/www.conf
+COPY config/www.conf /etc/php/7.0/fpm/pool.d/www.conf
 
 # mysql install
 RUN apt-get install -y apt-utils \
