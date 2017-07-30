@@ -3,7 +3,7 @@ FROM ubuntu:17.04
 RUN apt-get update
 
 # basic packages
-RUN apt-get install -y gnupg net-tools wget nano less cron ntp
+RUN apt-get install -y gnupg net-tools wget nano less cron ntp python-pip python-dev build-essential
 
 # php
 RUN apt-get install -y php php-fpm php-mysql php-gd php-curl php-mbstring php-mcrypt php-xml php-xmlrpc
@@ -45,6 +45,9 @@ COPY config/init.sh /root/init.sh
 
 # timezone
 COPY config/timezone.sh /root/timezone.sh
+
+# awc command line
+RUN pip install awscli
 
 # clean up
 RUN apt-get clean
